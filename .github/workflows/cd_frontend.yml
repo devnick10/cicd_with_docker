@@ -19,13 +19,15 @@ jobs:
           username: ${{secrets.DOCKER_USERNAME}}
           password: ${{secrets.DOCKER_PASSSWORD}}
 
-      - name: Build and push backend image
+      - name: Build and push web image
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./docker/Dockerfile.http
+          file: ./docker/Dockerfile.fe
           push: true
-          tags: devnick10/docker-cicd-http:${{github.sha}}
+          tags: devnick10/docker-cicd-web:${{github.sha}}
+          build-args: |
+            DATABASE_URL=${{secrets.DATABASE_URL}}
 
       - name: Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
@@ -34,7 +36,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker pull devnick10/docker-cicd-http:latest
-            sudo docker stop docker-cicd-http || true
-            sudo docker rm docker-cicd-http || true
-            sudo docker run -e DATABASE_URL ${{secrets.DATABASE_URL}} -d --name http -p 3001:3001 devnick10/docker-cicd-http:latest
+            sudo docker pull devnick10/docker-cicd-web:latest
+            sudo docker stop docker-cicd-web || true
+            sudo docker rm docker-cicd-web || true
+            sudo docker run -e DATABASE_URL ${{secrets.DATABASE_URL}} -d --name web -p 3000:3000 devnick10/docker-cicd-web:latest

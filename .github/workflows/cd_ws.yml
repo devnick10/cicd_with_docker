@@ -1,4 +1,4 @@
-name: Build and deploy
+name: Build and deploy WS
 
 on:
   push:
@@ -19,13 +19,13 @@ jobs:
           username: ${{secrets.DOCKER_USERNAME}}
           password: ${{secrets.DOCKER_PASSSWORD}}
 
-      - name: Build and push backend image
+      - name: Build and push websocket image
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./docker/Dockerfile.http
+          file: ./docker/Dockerfile.ws
           push: true
-          tags: devnick10/docker-cicd-http:${{github.sha}}
+          tags: devnick10/docker-cicd-ws:${{github.sha}}
 
       - name: Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker pull devnick10/docker-cicd-http:latest
-            sudo docker stop docker-cicd-http || true
-            sudo docker rm docker-cicd-http || true
-            sudo docker run -e DATABASE_URL ${{secrets.DATABASE_URL}} -d --name http -p 3001:3001 devnick10/docker-cicd-http:latest
+            sudo docker pull devnick10/docker-cicd-ws:latest
+            sudo docker stop docker-cicd-ws || true
+            sudo docker rm docker-cicd-ws || true
+            sudo docker run -d --name web -p 8080:8080 devnick10/docker-cicd-web:latest
