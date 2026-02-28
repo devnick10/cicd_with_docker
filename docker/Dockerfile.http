@@ -2,16 +2,18 @@ FROM oven/bun:1-alpine
 
 WORKDIR /user/src/app
 
-COPY ../packages .
 COPY ../bun.lock .
-
 COPY ../package.json .
 COPY ../turbo.json .
 
+COPY ../packages ./packages
+COPY ../apps/http-backend/package.json ./apps/http-backend/package.json
+
 RUN bun install 
-RUN bun turbo run db:generate
 
 COPY ../apps/http-backend ./apps/http-backend
+
+RUN bun turbo run db:generate
 
 EXPOSE 3001
 
