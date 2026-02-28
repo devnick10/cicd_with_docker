@@ -25,7 +25,7 @@ jobs:
           context: .
           file: ./docker/Dockerfile.fe
           push: true
-          tag: devnick10/docker-cicd-web:latest
+          tags: devnick10/docker-cicd-web:latest
           build-args: |
            DATABASE_URL=${{secrets.DATABASE_URL}}
 
@@ -35,7 +35,7 @@ jobs:
           context: .
           file: ./docker/Dockerfile.http
           push: true
-          tag: devnick10/docker-cicd-http:latest
+          tags: devnick10/docker-cicd-http:latest
 
       - name: Build and push websocket image
         uses: docker/build-push-action@v3
@@ -43,7 +43,7 @@ jobs:
           context: .
           file: ./docker/Dockerfile.ws
           push: true
-          tag: devnick10/docker-cicd-ws:latest
+          tags: devnick10/docker-cicd-ws:latest
 
       - name: Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
