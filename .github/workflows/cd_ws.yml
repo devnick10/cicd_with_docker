@@ -37,4 +37,4 @@ jobs:
             sudo docker pull devnick10/docker-cicd-ws:latest
             sudo docker stop docker-cicd-ws || true
             sudo docker rm docker-cicd-ws || true
-            sudo docker run -d --name web -p 8080:8080 devnick10/docker-cicd-web:latest
+            sudo docker run -d --name docker-cicd-ws -p 8080:8080 devnick10/docker-cicd-web:latest

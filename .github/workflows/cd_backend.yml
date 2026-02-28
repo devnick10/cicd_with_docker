@@ -37,4 +37,4 @@ jobs:
             sudo docker pull devnick10/docker-cicd-http:latest
             sudo docker stop docker-cicd-http || true
             sudo docker rm docker-cicd-http || true
-            sudo docker run -e DATABASE_URL ${{secrets.DATABASE_URL}} -d --name http -p 3001:3001 devnick10/docker-cicd-http:latest
+            sudo docker run -e DATABASE_URL ${{secrets.DATABASE_URL}} -d --name docker-cicd-http -p 3001:3001 devnick10/docker-cicd-http:latest
