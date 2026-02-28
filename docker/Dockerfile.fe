@@ -2,19 +2,20 @@ FROM oven/bun:1-alpine
 
 WORKDIR /user/src/app
 
-ARG DATABASE_URL
-
 COPY ../packages ./packages
 COPY ../bun.lock .
 
 COPY ../package.json .
 COPY ../turbo.json .
 
-COPY ../apps/web ./apps/web
+COPY ../apps/web/package.json ./apps/web/package.json
 
 RUN bun install 
+
+COPY ../apps/web ./apps/web
+
 RUN bun turbo run db:generate
-RUN DATABASE_URL=${DATABASE_URL} bun run build 
+RUN bun run build 
 
 EXPOSE 3000
 

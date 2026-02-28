@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import React from 'react'
 import { TodoInput } from '../components/todo-input'
 import { Todos } from '../components/todos'
